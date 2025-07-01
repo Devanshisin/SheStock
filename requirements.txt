@@ -1,5 +1,10 @@
 streamlit
 pandas
-xgboost
 scikit-learn
+xgboost
+plotly
 category_encoders
+shap
+yfinance
+beautifulsoup4
+requests
