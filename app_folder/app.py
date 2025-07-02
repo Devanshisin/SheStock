@@ -380,9 +380,9 @@ with tab1:
                         <span class="{confidence_class}">Confidence: {proba*100:.1f}%</span>
                     </div>
                     """, unsafe_allow_html=True)
-                else:
-                    confidence_class = "confidence-high" if (1-proba) > 0.8 else "confidence-medium" if (1-proba) > 0.6 else "confidence-low"
-                    st.markdown(f"""
+                # else:
+                #     confidence_class = "confidence-high" if (1-proba) > 0.8 else "confidence-medium" if (1-proba) > 0.6 else "confidence-low"
+                #     st.markdown(f"""
                     <div class="prediction-error">
                         🚫 <strong>NOT RECOMMENDED</strong><br>
                         <span class="{confidence_class}">Confidence: {(1-proba)*100:.1f}%</span>
@@ -390,6 +390,33 @@ with tab1:
                     """, unsafe_allow_html=True)
             else:
                 st.error("Model not available. Please check the model file.")
+                --- Show real similar companies ---
+                try:
+                    esg_df = pd.read_csv("preprocessed_esg_dataset.csv")
+                    # Filter dataset for similar profile
+                    matching = esg_df[
+                        (esg_df["Female_CEO"] == female_ceo) &
+                        (esg_df["Female_Board_Members"] >= female_board - 1) &
+                        (esg_df["Female_Board_Members"] <= female_board + 1) &
+                        (esg_df["ESG_Score"] >= esg_score - 0.1) &
+                        (esg_df["ESG_Score"] <= esg_score + 0.1)
+                    ]
+
+                    # Sort by ESG Score + Board representation
+                    matching["Score"] = matching["ESG_Score"] + 0.05 * matching["Female_Board_Members"]
+                    top_stocks = matching.sort_values(by="Score", ascending=False).head(5)
+
+                    if not top_stocks.empty:
+                        st.markdown("### 🏆 Top Real Stocks Matching Profile")
+                        for i, row in top_stocks.iterrows():
+                            st.markdown(f"""
+                            **{row['Company']}** ({row['Ticker']})  
+                            ESG Score: {row['ESG_Score']:.2f} | Female Board Members: {int(row['Female_Board_Members'])}
+                            """)
+                    else:
+                        st.warning("No exact real stock matches found. Try changing the ESG or leadership values.")
+                except Exception as e:
+                    st.error(f"❌ Could not load real stock data: {e}")
 
 with tab2:
     st.header("📊 Data Visualization")
