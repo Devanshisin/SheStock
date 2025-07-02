@@ -123,7 +123,7 @@ def load_model():
         with open("model/recommender.pkl", "rb") as f:
             model = pickle.load(f)
             # Test if model has required methods
-            if not (hasattr(model, 'predict') and (hasattr(model, 'predict_proba') or hasattr(model, 'decision_function')):
+            if not (hasattr(model, 'predict') and (hasattr(model, 'predict_proba') or hasattr(model, 'decision_function'))):
                 st.warning("Model doesn't have required prediction methods. Using default recommendations.")
                 return None
             return model
