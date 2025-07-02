@@ -384,7 +384,8 @@ with tab1:
                 #     confidence_class = "confidence-high" if (1-proba) > 0.8 else "confidence-medium" if (1-proba) > 0.6 else "confidence-low"
                 #     st.markdown(f"""
                     <div class="prediction-error">
-                        🚫 <strong>NOT RECOMMENDED</strong><br>
+                       <strong> &#128683; NOT RECOMMENDED</strong><br>
+
                         <span class="{confidence_class}">Confidence: {(1-proba)*100:.1f}%</span>
                     </div>
                     """, unsafe_allow_html=True)
