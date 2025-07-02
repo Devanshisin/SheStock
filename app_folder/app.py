@@ -13,6 +13,62 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Define tabs FIRST
+tab1, tab2, tab3, tab4 = st.tabs(["🔍 Stock Analysis", "📊 Real Stock Matches", "📈 Visualization", "📋 History"])
+
+# Then load data
+@st.cache_data
+def load_real_stock_data():
+    # ... your stock data loading code ...
+    return result_df
+
+# Then load model
+@st.cache_resource
+def load_model():
+    # ... your model loading code ...
+    return model
+
+# Initialize session state
+if 'prediction_history' not in st.session_state:
+    st.session_state.prediction_history = []
+
+# Helper functions
+def find_similar_stocks(input_data, stock_df, top_n=5):
+    # ... your similarity function ...
+    return stock_df_copy.sort_values('similarity_score', ascending=False).head(top_n)
+
+# Now define tab contents
+with tab1:
+    # Tab 1 content here
+    col1, col2 = st.columns([2, 1])
+    # ... rest of tab1 content ...
+
+with tab2:
+    # Tab 2 content here
+    st.header("📊 Real Stock Matches")
+    # ... rest of tab2 content ...
+
+with tab3:
+    # Tab 3 content here
+    st.header("📊 Data Visualization")
+    # ... rest of tab3 content ...
+
+with tab4:
+    # Tab 4 content here 
+    st.header("📋 Prediction History")
+    # ... rest of tab4 content ...
+
+# Footer and other page elements
+st.markdown("---")
+# ... footer content ...
+# Set page config
+st.set_page_config(
+    page_title="SheStock: ESG Stock Recommender", 
+    page_icon="🌱",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # Sample real stock data with ESG and diversity metrics (now including Indian stocks)
 @st.cache_data
 def load_real_stock_data():
